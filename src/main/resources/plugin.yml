@@ -1,0 +1,11 @@
+name: ChunkCells
+version: ${project.version}
+main: dev.lightdream.chunkcells.Main
+authors: [ L1ghtDream ]
+website: https://lightdream.dev
+depend:
+  - LightDreamAPI
+  - WorldEdit
+commands:
+  cc:
+    description: NA
