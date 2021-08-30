@@ -6,6 +6,7 @@ website: https://lightdream.dev
 depend:
   - LightDreamAPI
   - WorldEdit
+  - Cookies
 commands:
   cc:
     description: NA

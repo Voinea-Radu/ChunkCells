@@ -3,6 +3,7 @@ package dev.lightdream.chunkcells;
 import dev.lightdream.api.LightDreamPlugin;
 import dev.lightdream.api.utils.LangUtils;
 import dev.lightdream.chunkcells.commands.GenerateCell;
+import dev.lightdream.chunkcells.commands.UpgradeCommand;
 import dev.lightdream.chunkcells.files.config.Config;
 import dev.lightdream.chunkcells.files.config.Lang;
 import dev.lightdream.chunkcells.files.config.Saves;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class Main extends LightDreamPlugin {
 
+    //todo config
     public static final int CELL_X_SIZE = 47;
     public static final int CELL_Y_SIZE = 53;
     public static final int CELL_Z_SIZE = 49;
@@ -33,6 +35,7 @@ public final class Main extends LightDreamPlugin {
         instance = this;
 
         baseCommands.add(new GenerateCell(this));
+        baseCommands.add(new UpgradeCommand(this));
 
         databaseManager = new DatabaseManager(this);
         new EventsManager(this);
