@@ -25,4 +25,11 @@ public class PositionRange {
         return new PositionRange(pos1.clone(),pos2.clone());
     }
 
+    @Override
+    public String toString() {
+        return "PositionRange{" +
+                "pos1=" + pos1 +
+                ", pos2=" + pos2 +
+                '}';
+    }
 }

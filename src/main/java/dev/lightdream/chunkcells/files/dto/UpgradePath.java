@@ -11,10 +11,13 @@ public class UpgradePath {
     public int mine;
     public int crops;
     public int blocks;
+    public int wall;
+
     public int cellPrice;
     public int furnacePrice;
     public int farmPrice;
     public int minePrice;
     public int cropsPrice;
     public int blocksPrice;
+    public int wallPrice;
 }

@@ -47,4 +47,10 @@ public class DatabaseManager extends dev.lightdream.api.managers.DatabaseManager
     public @NotNull User getUser(@NotNull OfflinePlayer player) {
         return getUser(player.getUniqueId());
     }
+
+    public @Nullable User getUser(String axis, int cell) {
+        Optional<User> optionalUser = getUsers().stream().filter(user -> user.cellAxis.equals(axis) && user.cell == cell).findFirst();
+
+        return optionalUser.orElse(null);
+    }
 }

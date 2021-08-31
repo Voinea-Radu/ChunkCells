@@ -20,4 +20,12 @@ public class Position {
         return new Position(x, y, z);
     }
 
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }

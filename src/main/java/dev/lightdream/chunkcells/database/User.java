@@ -9,15 +9,17 @@ import dev.lightdream.chunkcells.files.dto.UpgradePath;
 import dev.lightdream.chunkcells.utils.Utils;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
 public class User extends dev.lightdream.api.databases.User {
 
-    @DatabaseField(columnName = "cell_range")
-    public int cellX;
-    @DatabaseField(columnName = "cell_y")
-    public int cellZ;
+    @DatabaseField(columnName = "cell_axis")
+    public String cellAxis;
+    @DatabaseField(columnName = "cell")
+    public int cell;
     @DatabaseField(columnName = "cell_level")
     public int cellLevel;
     @DatabaseField(columnName = "furnace_level")
@@ -30,30 +32,52 @@ public class User extends dev.lightdream.api.databases.User {
     public int cropsLevel;
     @DatabaseField(columnName = "blocks_level")
     public int blocksLevel;
+    @DatabaseField(columnName = "wall_level")
+    public int wallLevel;
 
     public User(UUID uuid, String name) {
         this.uuid = uuid;
         this.name = name;
-        this.cellX = -1;
-        this.cellZ = -1;
+        this.cell = -1;
         this.cellLevel = 1;
         this.furnaceLevel = 1;
         this.farmLevel = 1;
         this.mineLevel = 1;
         this.cropsLevel = 1;
         this.blocksLevel = 1;
+        this.wallLevel = 1;
     }
 
     public LocationRange getRange() {
         if (!hasCell()) {
             return null;
         }
-        return new LocationRange(new PluginLocation(Main.instance.config.cellWorld, cellX * Main.CELL_X_SIZE, Main.instance.config.cellPasteY, cellZ * Main.CELL_Z_SIZE),
-                new PluginLocation(Main.instance.config.cellWorld, (cellX + 1) * Main.CELL_X_SIZE - 1, Main.instance.config.cellPasteY + Main.CELL_Y_SIZE, (cellZ + 1) * Main.CELL_Z_SIZE - 1));
+        PluginLocation pos1 = Utils.getCellPasteLocation(cellAxis, cell);
+        PluginLocation pos2 = Utils.getCellPasteLocation(cellAxis, cell - 2);
+        pos2.y += Main.instance.config.cellSizeY;
+
+        switch (cellAxis) {
+            case "+X":
+                pos2.z -= Main.instance.config.cellSizeZ;
+                break;
+            case "+Z":
+                pos2.x -= Main.instance.config.cellSizeZ;
+                break;
+            case "-X":
+                pos2.z += Main.instance.config.cellSizeZ;
+                break;
+            case "-Z":
+                pos2.x += Main.instance.config.cellSizeZ;
+                break;
+        }
+
+        LocationRange range = new LocationRange(pos1, pos2);
+        System.out.println(range);
+        return range;
     }
 
     public boolean hasCell() {
-        return cellX != -1 && cellZ != -1;
+        return cell != -1;
     }
 
     public int getMaxLevel(String type) {
@@ -70,6 +94,8 @@ public class User extends dev.lightdream.api.databases.User {
                 return Main.instance.config.upgrades.get(cellLevel).blocks;
             case "cell":
                 return Main.instance.config.upgrades.size();
+            case "wall":
+                return Main.instance.config.upgrades.get(cellLevel).wall;
         }
         return 0;
     }
@@ -88,6 +114,8 @@ public class User extends dev.lightdream.api.databases.User {
                 return this.blocksLevel;
             case "cell":
                 return this.cellLevel;
+            case "wall":
+                return this.wallLevel;
         }
         return 0;
     }
@@ -109,6 +137,8 @@ public class User extends dev.lightdream.api.databases.User {
             case "blocks":
                 this.blocksLevel = level;
                 break;
+            case "wall":
+                this.wallLevel = level;
             case "cell":
                 this.cellLevel = level;
                 this.furnaceLevel = 1;
@@ -127,16 +157,18 @@ public class User extends dev.lightdream.api.databases.User {
                     this.farmLevel == getMaxLevel("farm") &&
                     this.cropsLevel == getMaxLevel("crops") &&
                     this.blocksLevel == getMaxLevel("blocks") &&
-                    this.cropsLevel == getMaxLevel("crops"))) {
+                    this.cropsLevel == getMaxLevel("crops")) &&
+                    this.wallLevel == getMaxLevel("wall")) {
                 return false;
             }
         }
         if (this.getLevel(type) != getMaxLevel(type)) {
             int newLevel = getLevel(type) + 1;
             setLevel(type, newLevel);
-            Utils.upgradeCell(getPlayer(), cellLevel, type, newLevel);
+            Utils.upgradeCell(this, type, newLevel);
             return true;
         }
+
         return false;
     }
 
@@ -179,12 +211,32 @@ public class User extends dev.lightdream.api.databases.User {
                     return 0;
                 }
                 return path.cellPrice;
+            case "wall":
+                path = Main.instance.config.upgrades.get(cellLevel);
+                if (path == null) {
+                    return 0;
+                }
+                return path.wallPrice;
         }
         return 0;
     }
 
-    public PositionRange getMineRange(){
+    public PositionRange getMineOffset() {
         return Main.instance.config.mines.get(this.cellLevel).get(this.mineLevel).deepClone();
+    }
+
+    public List<User> getNeighbors() {
+        User n1 = Main.instance.databaseManager.getUser(cellAxis, cell - 2);
+        User n2 = Main.instance.databaseManager.getUser(cellAxis, cell + 2);
+
+        List<User> neighbors = new ArrayList<>();
+        if (n1 != null) {
+            neighbors.add(n1);
+        }
+        if (n2 != null) {
+            neighbors.add(n2);
+        }
+        return neighbors;
     }
 
 }

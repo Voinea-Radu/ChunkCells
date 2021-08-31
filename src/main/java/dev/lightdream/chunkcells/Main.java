@@ -2,22 +2,17 @@ package dev.lightdream.chunkcells;
 
 import dev.lightdream.api.LightDreamPlugin;
 import dev.lightdream.api.utils.LangUtils;
-import dev.lightdream.chunkcells.commands.GenerateCell;
-import dev.lightdream.chunkcells.commands.UpgradeCommand;
+import dev.lightdream.chunkcells.commands.*;
 import dev.lightdream.chunkcells.files.config.Config;
 import dev.lightdream.chunkcells.files.config.Lang;
 import dev.lightdream.chunkcells.files.config.Saves;
 import dev.lightdream.chunkcells.managers.DatabaseManager;
 import dev.lightdream.chunkcells.managers.EventsManager;
+import dev.lightdream.chunkcells.managers.ScheduleManager;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 public final class Main extends LightDreamPlugin {
-
-    //todo config
-    public static final int CELL_X_SIZE = 47;
-    public static final int CELL_Y_SIZE = 53;
-    public static final int CELL_Z_SIZE = 49;
 
     public static Main instance;
 
@@ -28,6 +23,7 @@ public final class Main extends LightDreamPlugin {
 
     //Managers
     public DatabaseManager databaseManager;
+    public EventsManager eventsManager;
 
     @Override
     public void onEnable() {
@@ -36,14 +32,22 @@ public final class Main extends LightDreamPlugin {
 
         baseCommands.add(new GenerateCell(this));
         baseCommands.add(new UpgradeCommand(this));
+        baseCommands.add(new RegenerateMine(this));
+        baseCommands.add(new GetRaidTool(this));
+        baseCommands.add(new TpCommand(this));
+        baseCommands.add(new AdminModeCommand(this));
+        baseCommands.add(new FixWalls(this));
 
         databaseManager = new DatabaseManager(this);
-        new EventsManager(this);
+        eventsManager = new EventsManager(this);
+        new ScheduleManager(this);
     }
 
     @Override
-    public void onDisable(){
+    public void onDisable() {
         fileManager.save(saves);
+
+        databaseManager.save();
     }
 
     @Override
