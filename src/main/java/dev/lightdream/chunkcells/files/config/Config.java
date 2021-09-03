@@ -6,6 +6,7 @@ import dev.lightdream.chunkcells.files.dto.PositionRange;
 import dev.lightdream.chunkcells.files.dto.UpgradePath;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -92,7 +93,7 @@ public class Config extends dev.lightdream.api.files.config.Config {
     public int raidDurabilityUse = 50;
     public int raidDuration = 5 * 60;
 
-    public HashMap<Integer, List<XMaterial>> wallMaterials = new HashMap<Integer, List<XMaterial>>(){{
+    public HashMap<Integer, List<XMaterial>> wallMaterials = new HashMap<Integer, List<XMaterial>>() {{
         put(1, Arrays.asList(
                 XMaterial.DIORITE,
                 XMaterial.POLISHED_DIORITE
@@ -109,5 +110,44 @@ public class Config extends dev.lightdream.api.files.config.Config {
                 XMaterial.MOSSY_STONE_BRICKS
         ));
     }};
+
+    public int cellRent = 10;
+
+    public GUIConfig choseAxisGUI = new GUIConfig("chose_axis", "CHEST", "Chose Axis", 3, 9,
+            new Item(XMaterial.GLASS_PANE, 1),
+            new HashMap<String, GUIItem>() {{
+                put("+x", new GUIItem(new Item(XMaterial.STONE, 0, 1, "+X", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_+x\"}"));
+                put("+z", new GUIItem(new Item(XMaterial.STONE, 1, 1, "+Z", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_+z\"}"));
+                put("-x", new GUIItem(new Item(XMaterial.STONE, 2, 1, "-X", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_-x\"}"));
+                put("-z", new GUIItem(new Item(XMaterial.STONE, 3, 1, "-Z", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_-z\"}"));
+                put("unrent", new GUIItem(new Item(XMaterial.RED_WOOL,4,1,"Unrent", new ArrayList<>()), "{functions:[unrent_cell], unrent_cell:\"\"}"));
+
+            }});
+
+    public GUIConfig rentGUI = new GUIConfig("rent", "CHEST","Rent a cell", 3, new Item(XMaterial.GLASS_PANE,1),
+            new HashMap<String,GUIItem>(){{
+                put("slot_1", new GUIItem(new Item(XMaterial.STONE, 0, 1,"Cell %number%", Arrays.asList(
+                        "Rent: 10/day",
+                        "Free: %free%"
+                )),"{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
+                put("slot_2", new GUIItem(new Item(XMaterial.STONE, 1, 1,"Cell %number%", Arrays.asList(
+                        "Rent: 10/day",
+                        "Free: %free%"
+                )),"{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
+                put("slot_3", new GUIItem(new Item(XMaterial.STONE, 2, 1,"Cell %number%", Arrays.asList(
+                        "Rent: 10/day",
+                        "Free: %free%"
+                )),"{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
+                put("slot_4", new GUIItem(new Item(XMaterial.STONE, 3, 1,"Cell %number%", Arrays.asList(
+                        "Rent: 10/day",
+                        "Free: %free%"
+                )), "{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
+                put("main_menu", new GUIItem(new Item(XMaterial.BARRIER, 4,1,"Main Menu", new ArrayList<>(), new HashMap<>()), "{functions:[open_gui], open_gui:\"chose_axis\"}"));
+                put("back", new GUIItem(new Item(XMaterial.ARROW,5,1,"back", new ArrayList<>()), "{functions:[back_page], back_page:\"\"}"));
+                put("next", new GUIItem(new Item(XMaterial.ARROW,6,1,"next", new ArrayList<>()), "{functions:[next_page], next_page:\"\"}"));
+                put("generate", new GUIItem(new Item(XMaterial.DIRT,7,1,"Generate New", new ArrayList<>()), "{functions:[generate_cell, rent_cell], generate_cell:\"%axis%\", rent_cell:\"%axis%_%last_cell%\"}"));
+    }});
+
+    public int cellGeneratePrice = 10;
 
 }

@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Lang extends dev.lightdream.api.files.config.Lang {
 
-    public String creatingCell = "Creating your cell...";
-    public String cellCreated = "Created cell";
+    //public String creatingCell = "Creating your cell...";
+    //public String cellCreated = "Created cell";
     public String alreadyHaveCell = "You already have a cell";
     public String notEnoughCookies = "You do not have enough cookies";
     public String upgradingCell = "Upgrading cell...";
@@ -23,5 +23,8 @@ public class Lang extends dev.lightdream.api.files.config.Lang {
     public String invalidAxis = "Invalid axis";
     public String fixingWalls = "Fixing walls...";
     public String fixedWalls = "Fixed walls";
+    public String generationRequestSent = "Your generation request has been sent";
+    public String cellRented = "Cell rented";
+    public String cellUnrented = "Cell unrented";
 
 }

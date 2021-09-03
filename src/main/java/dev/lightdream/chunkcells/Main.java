@@ -36,7 +36,8 @@ public final class Main extends LightDreamPlugin {
         baseCommands.add(new GetRaidTool(this));
         baseCommands.add(new TpCommand(this));
         baseCommands.add(new AdminModeCommand(this));
-        baseCommands.add(new FixWalls(this));
+        baseCommands.add(new FixWallsCommand(this));
+        baseCommands.add(new RentCommand(this));
 
         databaseManager = new DatabaseManager(this);
         eventsManager = new EventsManager(this);

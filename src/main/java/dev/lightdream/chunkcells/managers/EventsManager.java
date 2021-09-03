@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -119,6 +120,14 @@ public class EventsManager implements Listener {
             }
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        User user = Main.instance.databaseManager.getUser(event.getPlayer());
+        if (!user.paidRent()) {
+            user.unrent();
+        }
     }
 
 }

@@ -34,6 +34,8 @@ public class User extends dev.lightdream.api.databases.User {
     public int blocksLevel;
     @DatabaseField(columnName = "wall_level")
     public int wallLevel;
+    @DatabaseField(columnName = "last_rent")
+    public long lastRent;
 
     public User(UUID uuid, String name) {
         this.uuid = uuid;
@@ -72,7 +74,6 @@ public class User extends dev.lightdream.api.databases.User {
         }
 
         LocationRange range = new LocationRange(pos1, pos2);
-        System.out.println(range);
         return range;
     }
 
@@ -237,6 +238,18 @@ public class User extends dev.lightdream.api.databases.User {
             neighbors.add(n2);
         }
         return neighbors;
+    }
+
+    public boolean paidRent() {
+        long passedTime = System.currentTimeMillis() - lastRent;
+        return passedTime <= 24 * 60 * 60 * 60 * 1000L;
+    }
+
+    public void unrent(){
+            this.cell = -1;
+            this.cellAxis = "";
+            Main.instance.databaseManager.save(this);
+
     }
 
 }

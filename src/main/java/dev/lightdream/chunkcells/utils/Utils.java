@@ -21,39 +21,21 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class Utils extends dev.lightdream.api.utils.Utils {
 
-    private static final List<UUID> toggledPlayers = new ArrayList<>();
-
-    public static void generateCell(Player player, String axis) {
-        //Assigning user cell
-        User user = Main.instance.databaseManager.getUser(player);
-        user.cellAxis = axis;
-        user.cell = Main.instance.saves.axis.get(axis);
-        Main.instance.databaseManager.save(user);
-        Main.instance.saves.axis.put(axis, user.cell + 1);
-        MessageUtils.sendMessage(player, Main.instance.lang.creatingCell);
-
-        //Teleport to wait position
-        player.teleport(Main.instance.config.cellCreateWaitingLocation.toLocation());
+    public static void generateCell(String axis) {
+        //Mark the cell as generated
+        int cell = Main.instance.saves.axis.get(axis);
+        Main.instance.saves.axis.put(axis, cell + 1);
 
         //Load schematic
         CuboidClipboard clipboard = WorldEditUtils.load("schematics", "C1", Main.instance);
 
         //Get paste location
-        PluginLocation location = getCellPasteLocation(user.cellAxis, user.cell);
-        System.out.println(location);
+        PluginLocation location = getCellPasteLocation(axis, cell);
 
         //Paste
         clipboard.rotate2D((int) location.rotationX);
         WorldEditUtils.paste(location, clipboard);
         WorldEditUtils.paste(location, clipboard);
-
-        MessageUtils.sendMessage(player, Main.instance.lang.cellCreated);
-
-        //Refill its mine
-        mineRefill(user);
-
-        //Teleport the player to cell
-        player.teleport(getCellLocation(user).toLocation());
     }
 
     public static String shortenType(String type) {
@@ -304,4 +286,20 @@ public class Utils extends dev.lightdream.api.utils.Utils {
         //Teleport your to the cell
         user.getPlayer().teleport(getCellLocation(user).toLocation());
     }
+
+    public static void assignCell(User user, String axis, int cell){
+        user.cellAxis = axis;
+        user.cell = cell;
+        user.lastRent = System.currentTimeMillis();
+        Main.instance.databaseManager.save(user);
+
+        MessageUtils.sendMessage(user, Main.instance.lang.cellRented);
+
+        mineRefill(user);
+
+        if(user.isOnline()){
+            user.getPlayer().teleport(getCellLocation(user).toLocation());
+        }
+    }
+
 }
