@@ -12,11 +12,8 @@ import dev.lightdream.chunkcells.files.dto.PositionRange;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @SuppressWarnings("deprecation")
 public class Utils extends dev.lightdream.api.utils.Utils {
@@ -24,7 +21,7 @@ public class Utils extends dev.lightdream.api.utils.Utils {
     public static void generateCell(String axis) {
         //Mark the cell as generated
         int cell = Main.instance.saves.axis.get(axis);
-        Main.instance.saves.axis.put(axis, cell + 1);
+        Main.instance.saves.axis.put(axis, cell + Main.instance.config.numberOfCellsPerSchematic);
 
         //Load schematic
         CuboidClipboard clipboard = WorldEditUtils.load("schematics", "C1", Main.instance);
@@ -36,6 +33,8 @@ public class Utils extends dev.lightdream.api.utils.Utils {
         clipboard.rotate2D((int) location.rotationX);
         WorldEditUtils.paste(location, clipboard);
         WorldEditUtils.paste(location, clipboard);
+
+        Main.instance.config.extraCellGenerateCommands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
     }
 
     public static String shortenType(String type) {
@@ -287,7 +286,7 @@ public class Utils extends dev.lightdream.api.utils.Utils {
         user.getPlayer().teleport(getCellLocation(user).toLocation());
     }
 
-    public static void assignCell(User user, String axis, int cell){
+    public static void assignCell(User user, String axis, int cell) {
         user.cellAxis = axis;
         user.cell = cell;
         user.lastRent = System.currentTimeMillis();
@@ -297,8 +296,21 @@ public class Utils extends dev.lightdream.api.utils.Utils {
 
         mineRefill(user);
 
-        if(user.isOnline()){
+        if (user.isOnline()) {
             user.getPlayer().teleport(getCellLocation(user).toLocation());
+        }
+
+        boolean full = true;
+
+        for (int i = 0; i < Main.instance.saves.axis.get(axis); i++) {
+            if (Main.instance.databaseManager.getUser(axis, i) == null) {
+                full = false;
+                break;
+            }
+        }
+
+        if (full) {
+            generateCell(axis);
         }
     }
 

@@ -35,6 +35,8 @@ public class RentGUI extends GUI {
         String parsed = raw;
 
         parsed = parsed.replace("%number%", String.valueOf(number));
+        System.out.println(number);
+        System.out.println(Main.instance.databaseManager.getUser(axis, number - 1));
         parsed = parsed.replace("%free%", String.valueOf(Main.instance.databaseManager.getUser(axis, number - 1) == null));
         parsed = parsed.replace("%axis%", axis);
         parsed = parsed.replace("%last_cell%", String.valueOf(Main.instance.saves.axis.get(axis) - 1));
@@ -62,13 +64,11 @@ public class RentGUI extends GUI {
             new RentGUI(plugin, axis, page + 1).getInventory().open(player);
             return;
         }
-        System.out.println(function + " -> " + args);
         GUIFunctions.valueOf(function.toUpperCase()).function.execute(Main.instance.databaseManager.getUser(player), args);
     }
 
     @Override
     public boolean canAddItem(Item item, String key) {
-        System.out.println(item);
         if (key.equals("next")) {
             int foo = Main.instance.saves.axis.get(axis) - 1;
             int pages = foo / perPage;

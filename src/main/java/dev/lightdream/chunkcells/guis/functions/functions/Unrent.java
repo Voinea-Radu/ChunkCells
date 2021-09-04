@@ -9,7 +9,7 @@ import dev.lightdream.chunkcells.guis.functions.GUIFunction;
 public class Unrent implements GUIFunction {
     @Override
     public void execute(User user, JsonElement args) {
-        if(user.hasCell()){
+        if(!user.hasCell()){
             MessageUtils.sendMessage(user, Main.instance.lang.dontHaveCell);
             return;
         }

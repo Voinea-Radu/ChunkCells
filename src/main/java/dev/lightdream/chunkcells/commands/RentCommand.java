@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RentCommand extends Command {
     public RentCommand(@NotNull LightDreamPlugin plugin) {
-        super(plugin, Collections.singletonList("rent"), "", "", true, false, "");
+        super(plugin, Collections.singletonList(""), "", "", true, false, "");
     }
 
     @Override

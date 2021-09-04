@@ -150,4 +150,7 @@ public class Config extends dev.lightdream.api.files.config.Config {
 
     public int cellGeneratePrice = 10;
 
+    public int numberOfCellsPerSchematic = 1;
+    public List<String> extraCellGenerateCommands = new ArrayList<>();
+
 }

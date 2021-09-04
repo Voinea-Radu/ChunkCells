@@ -26,11 +26,9 @@ public class RentCell implements GUIFunction {
         }
 
         cPlayer.removeCookies(Main.instance.config.cellRent);
-        System.out.println("[1] " + args.getAsString());
         String cellArg = ((GUI) Main.instance.inventoryManager.getInventory(user.getPlayer()).get().getProvider()).parse(args.getAsString(), user.getPlayer());
-        System.out.println("[2] " + cellArg);
         String axis = cellArg.split("_")[0];
-        int cell = Integer.parseInt(cellArg.split("_")[1]);
+        int cell = Integer.parseInt(cellArg.split("_")[1])-1;
         Utils.assignCell(user, axis, cell);
     }
 }
