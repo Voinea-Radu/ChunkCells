@@ -4,7 +4,6 @@ main: dev.lightdream.chunkcells.Main
 authors: [ L1ghtDream ]
 website: https://lightdream.dev
 depend:
-  - LightDreamAPI
   - WorldEdit
   - Cookies
 commands:
