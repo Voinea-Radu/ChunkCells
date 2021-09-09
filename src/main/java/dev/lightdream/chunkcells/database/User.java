@@ -153,29 +153,13 @@ public class User extends dev.lightdream.api.databases.User {
     }
 
     public boolean upgrade(String type) {
-        System.out.println(type);
         if (type.equals("cell")) {
-            System.out.println(this.furnaceLevel == getMaxLevel("furnace"));
-            System.out.println(this.farmLevel == getMaxLevel("farm"));
-            System.out.println(this.cropsLevel == getMaxLevel("crops"));
-            System.out.println(this.blocksLevel == getMaxLevel("blocks"));
-            System.out.println(this.cropsLevel == getMaxLevel("crops"));
-            System.out.println(this.wallLevel == getMaxLevel("wall"));
-            System.out.println(!(this.furnaceLevel == getMaxLevel("furnace") &&
+            return !(this.furnaceLevel == getMaxLevel("furnace") &&
                     this.farmLevel == getMaxLevel("farm") &&
                     this.cropsLevel == getMaxLevel("crops") &&
                     this.blocksLevel == getMaxLevel("blocks") &&
                     this.cropsLevel == getMaxLevel("crops")) &&
-                    this.wallLevel == getMaxLevel("wall"));
-
-            if (!(this.furnaceLevel == getMaxLevel("furnace") &&
-                    this.farmLevel == getMaxLevel("farm") &&
-                    this.cropsLevel == getMaxLevel("crops") &&
-                    this.blocksLevel == getMaxLevel("blocks") &&
-                    this.cropsLevel == getMaxLevel("crops")) &&
-                    this.wallLevel == getMaxLevel("wall")) {
-                return false;
-            }
+                    this.wallLevel == getMaxLevel("wall");
         }
         if (this.getLevel(type) != getMaxLevel(type)) {
             int newLevel = getLevel(type) + 1;

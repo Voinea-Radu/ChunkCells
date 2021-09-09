@@ -34,6 +34,9 @@
                 <executions>
                     <execution>
                         <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -76,7 +79,7 @@
             <groupId>dev.lightdream</groupId>
             <artifactId>LightDreamAPI</artifactId>
             <version>1.94</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>

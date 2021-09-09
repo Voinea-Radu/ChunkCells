@@ -35,8 +35,6 @@ public class RentGUI extends GUI {
         String parsed = raw;
 
         parsed = parsed.replace("%number%", String.valueOf(number));
-        System.out.println(number);
-        System.out.println(Main.instance.databaseManager.getUser(axis, number - 1));
         parsed = parsed.replace("%free%", String.valueOf(Main.instance.databaseManager.getUser(axis, number - 1) == null));
         parsed = parsed.replace("%axis%", axis);
         parsed = parsed.replace("%last_cell%", String.valueOf(Main.instance.saves.axis.get(axis) - 1));
