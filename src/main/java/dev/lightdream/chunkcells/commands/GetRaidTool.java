@@ -1,7 +1,7 @@
 package dev.lightdream.chunkcells.commands;
 
 import dev.lightdream.api.LightDreamPlugin;
-import dev.lightdream.api.commands.Command;
+import dev.lightdream.api.commands.SubCommand;
 import dev.lightdream.api.utils.ItemBuilder;
 import dev.lightdream.chunkcells.Main;
 import org.bukkit.Material;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GetRaidTool extends Command {
+public class GetRaidTool extends SubCommand {
     public GetRaidTool(@NotNull LightDreamPlugin plugin) {
         super(plugin, Collections.singletonList("getRaidTool"), "", "", true, false, "");
     }

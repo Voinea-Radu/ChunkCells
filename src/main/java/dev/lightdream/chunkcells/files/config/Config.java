@@ -15,7 +15,7 @@ import java.util.List;
 public class Config extends dev.lightdream.api.files.config.Config {
 
     public String cellWorld = "world";
-    public PluginLocation cellCreateWaitingLocation = new PluginLocation("world", 0, 5, 0);
+    //public PluginLocation cellCreateWaitingLocation = new PluginLocation("world", 0, 5, 0);
     public int cellPasteY = 100;
     public int offsetFromCenter = 100;
     public float tpOffsetX = 31.5f;
@@ -28,31 +28,31 @@ public class Config extends dev.lightdream.api.files.config.Config {
                 put("upgrade_cell", new GUIItem(new Item(XMaterial.STONE, 10, 1, "Upgrade Cell", Arrays.asList(
                         "Level: %current_level%/%max_level%",
                         "Price: %price%"
-                ), new HashMap<>()), "{}"));
+                ), new HashMap<>()), new GUIItem.GUIItemArgs()));
                 put("upgrade_farm", new GUIItem(new Item(XMaterial.STONE, 12, 1, "Upgrade Farm", Arrays.asList(
                         "Level: %current_level%/%max_level%",
                         "Price: %price%"
-                ), new HashMap<>()), "{}"));
+                ), new HashMap<>()), new GUIItem.GUIItemArgs()));
                 put("upgrade_furnace", new GUIItem(new Item(XMaterial.STONE, 13, 1, "Upgrade Furnace", Arrays.asList(
                         "Level: %current_level%/%max_level%",
                         "Price: %price%"
-                ), new HashMap<>()), "{}"));
+                ), new HashMap<>()), new GUIItem.GUIItemArgs()));
                 put("upgrade_mine", new GUIItem(new Item(XMaterial.STONE, 14, 1, "Upgrade Mine", Arrays.asList(
                         "Level: %current_level%/%max_level%",
                         "Price: %price%"
-                ), new HashMap<>()), "{}"));
+                ), new HashMap<>()), new GUIItem.GUIItemArgs()));
                 put("upgrade_crops", new GUIItem(new Item(XMaterial.STONE, 15, 1, "Upgrade Crops", Arrays.asList(
                         "Level: %current_level%/%max_level%",
                         "Price: %price%"
-                ), new HashMap<>()), "{}"));
+                ), new HashMap<>()), new GUIItem.GUIItemArgs()));
                 put("upgrade_blocks", new GUIItem(new Item(XMaterial.STONE, 16, 1, "Upgrade Blocks", Arrays.asList(
                         "Level: %current_level%/%max_level%",
                         "Price: %price%"
-                ), new HashMap<>()), "{}"));
+                ), new HashMap<>()), new GUIItem.GUIItemArgs()));
                 put("upgrade_wall", new GUIItem(new Item(XMaterial.STONE, 17, 1, "Upgrade Wall", Arrays.asList(
                         "Level: %current_level%/%max_level%",
                         "Price: %price%"
-                ), new HashMap<>()), "{}"));
+                ), new HashMap<>()), new GUIItem.GUIItemArgs()));
             }}
     );
     public HashMap<Integer, UpgradePath> upgrades = new HashMap<Integer, UpgradePath>() {{
@@ -116,11 +116,21 @@ public class Config extends dev.lightdream.api.files.config.Config {
     public GUIConfig choseAxisGUI = new GUIConfig("chose_axis", "CHEST", "Chose Axis", 3, 9,
             new Item(XMaterial.GLASS_PANE, 1),
             new HashMap<String, GUIItem>() {{
-                put("+x", new GUIItem(new Item(XMaterial.STONE, 0, 1, "+X", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_+x\"}"));
-                put("+z", new GUIItem(new Item(XMaterial.STONE, 1, 1, "+Z", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_+z\"}"));
-                put("-x", new GUIItem(new Item(XMaterial.STONE, 2, 1, "-X", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_-x\"}"));
-                put("-z", new GUIItem(new Item(XMaterial.STONE, 3, 1, "-Z", new ArrayList<>(), new HashMap<>()), "{functions:[\"open_gui\"], open_gui:\"rent_-z\"}"));
-                put("unrent", new GUIItem(new Item(XMaterial.RED_WOOL,4,1,"Unrent", new ArrayList<>()), "{functions:[unrent_cell], unrent_cell:\"\"}"));
+                put("+x", new GUIItem(new Item(XMaterial.STONE, 0, 1, "+X", new ArrayList<>(), new HashMap<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("open_gui", "rent_+x");
+                }})));
+                put("+z", new GUIItem(new Item(XMaterial.STONE, 1, 1, "+Z", new ArrayList<>(), new HashMap<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("open_gui", "rent_+Z");
+                }})));
+                put("-x", new GUIItem(new Item(XMaterial.STONE, 2, 1, "-X", new ArrayList<>(), new HashMap<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("open_gui", "rent_-x");
+                }})));
+                put("-z", new GUIItem(new Item(XMaterial.STONE, 3, 1, "-Z", new ArrayList<>(), new HashMap<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("open_gui", "rent_-z");
+                }})));
+                put("unrent", new GUIItem(new Item(XMaterial.RED_WOOL,4,1,"Unrent", new ArrayList<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("unrent_cell", "");
+                }})));
 
             }});
 
@@ -129,23 +139,40 @@ public class Config extends dev.lightdream.api.files.config.Config {
                 put("slot_1", new GUIItem(new Item(XMaterial.STONE, 0, 1,"Cell %number%", Arrays.asList(
                         "Rent: 10/day",
                         "Free: %free%"
-                )),"{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
+                )),new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("rent_cell", "%axis%_%number%");
+                }})));
                 put("slot_2", new GUIItem(new Item(XMaterial.STONE, 1, 1,"Cell %number%", Arrays.asList(
                         "Rent: 10/day",
                         "Free: %free%"
-                )),"{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
+                )),new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("rent_cell", "%axis%_%number%");
+                }})));
                 put("slot_3", new GUIItem(new Item(XMaterial.STONE, 2, 1,"Cell %number%", Arrays.asList(
                         "Rent: 10/day",
                         "Free: %free%"
-                )),"{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
+                )),new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("rent_cell", "%axis%_%number%");
+                }})));
                 put("slot_4", new GUIItem(new Item(XMaterial.STONE, 3, 1,"Cell %number%", Arrays.asList(
                         "Rent: 10/day",
                         "Free: %free%"
-                )), "{functions:[\"rent_cell\"], rent_cell:\"%axis%_%number%\"}"));
-                put("main_menu", new GUIItem(new Item(XMaterial.BARRIER, 4,1,"Main Menu", new ArrayList<>(), new HashMap<>()), "{functions:[open_gui], open_gui:\"chose_axis\"}"));
-                put("back", new GUIItem(new Item(XMaterial.ARROW,5,1,"back", new ArrayList<>()), "{functions:[back_page], back_page:\"\"}"));
-                put("next", new GUIItem(new Item(XMaterial.ARROW,6,1,"next", new ArrayList<>()), "{functions:[next_page], next_page:\"\"}"));
-                put("generate", new GUIItem(new Item(XMaterial.DIRT,7,1,"Generate New", new ArrayList<>()), "{functions:[generate_cell, rent_cell], generate_cell:\"%axis%\", rent_cell:\"%axis%_%last_cell%\"}"));
+                )), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("rent_cell", "%axis%_%number%");
+                }})));
+                put("main_menu", new GUIItem(new Item(XMaterial.BARRIER, 4,1,"Main Menu", new ArrayList<>(), new HashMap<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("open_gui", "chose_axis");
+                }})));
+                put("back", new GUIItem(new Item(XMaterial.ARROW,5,1,"back", new ArrayList<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("back_page", "");
+                }})));
+                put("next", new GUIItem(new Item(XMaterial.ARROW,6,1,"next", new ArrayList<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("next_page", "");
+                }})));
+                put("generate", new GUIItem(new Item(XMaterial.DIRT,7,1,"Generate New", new ArrayList<>()), new GUIItem.GUIItemArgs(new HashMap<Object, Object>(){{
+                    put("generate_cell", "%axis%");
+                    put("rent_cell", "%axis%_%last_cell%");
+                }})));
     }});
 
     public int cellGeneratePrice = 10;

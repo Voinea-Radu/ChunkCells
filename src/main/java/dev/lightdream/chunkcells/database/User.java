@@ -1,12 +1,12 @@
 package dev.lightdream.chunkcells.database;
 
-import com.j256.ormlite.field.DatabaseField;
 import dev.lightdream.api.files.dto.LocationRange;
 import dev.lightdream.api.files.dto.PluginLocation;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.files.dto.PositionRange;
 import dev.lightdream.chunkcells.files.dto.UpgradePath;
 import dev.lightdream.chunkcells.utils.Utils;
+import dev.lightdream.libs.j256.field.DatabaseField;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;

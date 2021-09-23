@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.sk89q.worldedit.CuboidClipboard;
 import dev.lightdream.api.files.dto.PluginLocation;
 import dev.lightdream.api.files.dto.XMaterial;
-import dev.lightdream.api.utils.MessageUtils;
 import dev.lightdream.api.utils.WorldEditUtils;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.database.User;
@@ -57,8 +56,9 @@ public class Utils extends dev.lightdream.api.utils.Utils {
 
     public static void upgradeCell(User user, String type, int typeLevel) {
         //Teleport to wait position
-        user.getPlayer().teleport(Main.instance.config.cellCreateWaitingLocation.toLocation());
-        MessageUtils.sendMessage(user, Main.instance.lang.upgradingCell);
+        //todo remove comment
+        //user.getPlayer().teleport(Main.instance.config.cellCreateWaitingLocation.toLocation());
+        Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.upgradingCell);
 
         //Get the short type
         String shortType = shortenType(type);
@@ -77,7 +77,7 @@ public class Utils extends dev.lightdream.api.utils.Utils {
 
         //Paste schematic at location
         WorldEditUtils.paste(location, clipboard);
-        MessageUtils.sendMessage(user, Main.instance.lang.cellUpgraded);
+        Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.cellUpgraded);
 
         //Teleport your to the cell
         user.getPlayer().teleport(getCellLocation(user).toLocation());
@@ -234,12 +234,12 @@ public class Utils extends dev.lightdream.api.utils.Utils {
         PluginLocation location = new PluginLocation(Main.instance.config.cellWorld, 0, Main.instance.config.cellPasteY, 0);
 
         if (cell % 2 == 0) {
-            location.x = (cell / 2 + 1) * Main.instance.config.cellSizeX - 1 + Main.instance.config.offsetFromCenter;
-            location.z = Main.instance.config.cellSizeZ - 1 - Main.instance.config.offsetFromCenter / 2;
+            location.x = (double) ((cell / 2 + 1) * Main.instance.config.cellSizeX - 1 + Main.instance.config.offsetFromCenter);
+            location.z = (double) (Main.instance.config.cellSizeZ - 1 - Main.instance.config.offsetFromCenter / 2);
             location.rotationX = 180;
         } else {
-            location.x = (cell / 2) * Main.instance.config.cellSizeX + Main.instance.config.offsetFromCenter;
-            location.z = Main.instance.config.cellSizeZ - Main.instance.config.offsetFromCenter / 2;
+            location.x = (double) ((cell / 2) * Main.instance.config.cellSizeX + Main.instance.config.offsetFromCenter);
+            location.z = (double) (Main.instance.config.cellSizeZ - Main.instance.config.offsetFromCenter / 2);
         }
         double tmp;
         switch (axis) {
@@ -266,8 +266,9 @@ public class Utils extends dev.lightdream.api.utils.Utils {
 
     public static void fixWalls(User user) {
         //Teleport to wait position
-        user.getPlayer().teleport(Main.instance.config.cellCreateWaitingLocation.toLocation());
-        MessageUtils.sendMessage(user, Main.instance.lang.fixingWalls);
+        //todo remove comment
+        //user.getPlayer().teleport(Main.instance.config.cellCreateWaitingLocation.toLocation());
+        Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.fixingWalls);
 
         //Get paste location
         PluginLocation location = getCellPasteLocation(user.cellAxis, user.cell);
@@ -280,7 +281,7 @@ public class Utils extends dev.lightdream.api.utils.Utils {
         WorldEditUtils.paste(location, clipboard);
 
         //
-        MessageUtils.sendMessage(user, Main.instance.lang.fixedWalls);
+        Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.fixedWalls);
 
         //Teleport your to the cell
         user.getPlayer().teleport(getCellLocation(user).toLocation());
@@ -292,7 +293,7 @@ public class Utils extends dev.lightdream.api.utils.Utils {
         user.lastRent = System.currentTimeMillis();
         Main.instance.databaseManager.save(user);
 
-        MessageUtils.sendMessage(user, Main.instance.lang.cellRented);
+        Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.cellRented);
 
         mineRefill(user);
 

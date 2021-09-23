@@ -5,6 +5,8 @@ import dev.lightdream.chunkcells.database.User;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,8 +19,7 @@ public class DatabaseManager extends dev.lightdream.api.managers.DatabaseManager
     @SneakyThrows
     public DatabaseManager(LightDreamPlugin plugin) {
         super(plugin);
-        createTable(User.class);
-        createDao(User.class).setAutoCommit(getDatabaseConnection(), false);
+        setup(User.class);
     }
 
     @SneakyThrows
@@ -48,9 +49,20 @@ public class DatabaseManager extends dev.lightdream.api.managers.DatabaseManager
         return getUser(player.getUniqueId());
     }
 
+    public @NotNull User getUser(@NotNull Player player){
+        return getUser(player.getUniqueId());
+    }
+
     public @Nullable User getUser(String axis, int cell) {
         Optional<User> optionalUser = getUsers().stream().filter(user -> user.cellAxis.equals(axis) && user.cell == cell).findFirst();
 
         return optionalUser.orElse(null);
+    }
+
+    public @Nullable User getUser(@NotNull CommandSender commandSender){
+        if(!(commandSender instanceof Player)){
+            return null;
+        }
+        return getUser((Player) commandSender);
     }
 }

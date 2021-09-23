@@ -1,8 +1,6 @@
 package dev.lightdream.chunkcells.managers;
 
-import dev.lightdream.api.utils.MessageUtils;
 import dev.lightdream.chunkcells.Main;
-import dev.lightdream.chunkcells.utils.Utils;
 import org.bukkit.Bukkit;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,7 +16,7 @@ public class ScheduleManager {
 
     public void registerMineRefill() {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            MessageUtils.broadcast(plugin.lang.startedMineRefill);
+            Main.instance.getMessageManager().broadcast(plugin.lang.startedMineRefill);
             AtomicInteger delay = new AtomicInteger();
             plugin.databaseManager.getUsers().forEach(user -> {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -26,7 +24,7 @@ public class ScheduleManager {
                 }, delay.get());
             });
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                MessageUtils.broadcast(plugin.lang.finishedMineRefill);
+                Main.instance.getMessageManager().broadcast(plugin.lang.finishedMineRefill);
             }, delay.get());
         }, 0, Main.instance.config.mineRefillInterval * 20L);
     }

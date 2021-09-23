@@ -1,8 +1,7 @@
 package dev.lightdream.chunkcells.commands;
 
 import dev.lightdream.api.LightDreamPlugin;
-import dev.lightdream.api.commands.Command;
-import dev.lightdream.api.utils.MessageUtils;
+import dev.lightdream.api.commands.SubCommand;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.database.User;
 import dev.lightdream.chunkcells.utils.Utils;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TpCommand extends Command {
+public class TpCommand extends SubCommand {
     public TpCommand(@NotNull LightDreamPlugin plugin) {
         super(plugin, Collections.singletonList("tp"), "", "", true, false, "");
     }
@@ -22,8 +21,8 @@ public class TpCommand extends Command {
     @Override
     public void execute(CommandSender commandSender, List<String> args) {
         User user = Main.instance.databaseManager.getUser((Player) commandSender);
-        if(!user.hasCell()){
-            MessageUtils.sendMessage(user, Main.instance.lang.noCell);
+        if (!user.hasCell()) {
+            Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.noCell);
             return;
         }
         user.getPlayer().teleport(Utils.getCellLocation(user).toLocation());

@@ -1,8 +1,7 @@
 package dev.lightdream.chunkcells.commands;
 
 import dev.lightdream.api.LightDreamPlugin;
-import dev.lightdream.api.commands.Command;
-import dev.lightdream.api.utils.MessageUtils;
+import dev.lightdream.api.commands.SubCommand;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.utils.Utils;
 import org.bukkit.command.CommandSender;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GenerateCell extends Command {
+public class GenerateCell extends SubCommand {
     public final List<String> validAxis = Arrays.asList("+X", "-X", "+Z", "-Z");
 
     public GenerateCell(@NotNull LightDreamPlugin plugin) {
@@ -27,7 +26,7 @@ public class GenerateCell extends Command {
             return;
         }
         if (!validAxis.contains(args.get(0))) {
-            MessageUtils.sendMessage(commandSender, Main.instance.lang.invalidAxis);
+            Main.instance.getMessageManager().sendMessage(commandSender, Main.instance.lang.invalidAxis);
             return;
         }
         Utils.generateCell(args.get(0));

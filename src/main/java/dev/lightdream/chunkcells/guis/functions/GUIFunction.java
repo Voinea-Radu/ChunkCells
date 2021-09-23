@@ -5,6 +5,6 @@ import dev.lightdream.chunkcells.database.User;
 
 public interface GUIFunction {
 
-    void execute(User user, JsonElement args);
+    void execute(User user, Object args);
 
 }

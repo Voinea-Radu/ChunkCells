@@ -2,6 +2,8 @@ package dev.lightdream.chunkcells.guis;
 
 import com.google.gson.JsonElement;
 import dev.lightdream.api.LightDreamPlugin;
+import dev.lightdream.api.files.dto.GUIConfig;
+import dev.lightdream.api.files.dto.GUIItem;
 import dev.lightdream.api.files.dto.Item;
 import dev.lightdream.api.gui.GUI;
 import dev.lightdream.chunkcells.Main;
@@ -43,30 +45,30 @@ public class RentGUI extends GUI {
     }
 
     @Override
-    public void setConfig() {
-        config = Main.instance.config.rentGUI;
+    public GUIConfig setConfig() {
+        return  Main.instance.config.rentGUI;
     }
 
     @Override
     public InventoryProvider getProvider() {
-        return new RentGUI(plugin, axis, page);
+        return new RentGUI(Main.instance, axis, page);
     }
 
     @Override
-    public void functionCall(Player player, String function, JsonElement args) {
+    public void functionCall(Player player, String function, Object args) {
         if (function.equals("back_page")) {
-            new RentGUI(plugin, axis, page - 1).getInventory().open(player);
+            new RentGUI(Main.instance, axis, page - 1).getInventory().open(player);
             return;
         }
         if (function.equals("next_page")) {
-            new RentGUI(plugin, axis, page + 1).getInventory().open(player);
+            new RentGUI(Main.instance, axis, page + 1).getInventory().open(player);
             return;
         }
         GUIFunctions.valueOf(function.toUpperCase()).function.execute(Main.instance.databaseManager.getUser(player), args);
     }
 
     @Override
-    public boolean canAddItem(Item item, String key) {
+    public boolean canAddItem(GUIItem item, String key) {
         if (key.equals("next")) {
             int foo = Main.instance.saves.axis.get(axis) - 1;
             int pages = foo / perPage;

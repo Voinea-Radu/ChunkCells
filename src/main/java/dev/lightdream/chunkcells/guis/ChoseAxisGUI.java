@@ -2,6 +2,8 @@ package dev.lightdream.chunkcells.guis;
 
 import com.google.gson.JsonElement;
 import dev.lightdream.api.LightDreamPlugin;
+import dev.lightdream.api.files.dto.GUIConfig;
+import dev.lightdream.api.files.dto.GUIItem;
 import dev.lightdream.api.files.dto.Item;
 import dev.lightdream.api.gui.GUI;
 import dev.lightdream.chunkcells.Main;
@@ -22,23 +24,23 @@ public class ChoseAxisGUI extends GUI {
     }
 
     @Override
-    public void setConfig() {
-        config = Main.instance.config.choseAxisGUI;
+    public GUIConfig setConfig() {
+        return Main.instance.config.choseAxisGUI;
     }
 
     @Override
     public InventoryProvider getProvider() {
-        return new ChoseAxisGUI(plugin);
+        return new ChoseAxisGUI(Main.instance);
     }
 
     @Override
-    public void functionCall(Player player, String function, JsonElement args) {
+    public void functionCall(Player player, String function, Object args) {
         User user = Main.instance.databaseManager.getUser(player);
         GUIFunctions.valueOf(function.toUpperCase()).function.execute(user, args);
     }
 
     @Override
-    public boolean canAddItem(Item item, String key) {
+    public boolean canAddItem(GUIItem item, String key) {
         return true;
     }
 

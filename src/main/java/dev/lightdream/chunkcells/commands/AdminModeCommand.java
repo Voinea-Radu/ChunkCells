@@ -1,8 +1,7 @@
 package dev.lightdream.chunkcells.commands;
 
 import dev.lightdream.api.LightDreamPlugin;
-import dev.lightdream.api.commands.Command;
-import dev.lightdream.api.utils.MessageUtils;
+import dev.lightdream.api.commands.SubCommand;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.database.User;
 import org.bukkit.command.CommandSender;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AdminModeCommand extends Command {
+public class AdminModeCommand extends SubCommand {
     public AdminModeCommand(@NotNull LightDreamPlugin plugin) {
         super(plugin, Collections.singletonList("adminMode"), "", "", true, false, "");
     }
@@ -26,7 +25,7 @@ public class AdminModeCommand extends Command {
         } else {
             Main.instance.eventsManager.adminMode.add(user.uuid);
         }
-        MessageUtils.sendMessage(user, Main.instance.lang.adminMode);
+        Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.adminMode);
     }
 
     @Override

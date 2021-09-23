@@ -1,7 +1,7 @@
 package dev.lightdream.chunkcells.commands;
 
 import dev.lightdream.api.LightDreamPlugin;
-import dev.lightdream.api.commands.Command;
+import dev.lightdream.api.commands.SubCommand;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.guis.ChoseAxisGUI;
 import org.bukkit.command.CommandSender;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RentCommand extends Command {
+public class RentCommand extends SubCommand {
     public RentCommand(@NotNull LightDreamPlugin plugin) {
         super(plugin, Collections.singletonList(""), "", "", true, false, "");
     }

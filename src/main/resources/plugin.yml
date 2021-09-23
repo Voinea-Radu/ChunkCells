@@ -9,3 +9,5 @@ depend:
 commands:
   cc:
     description: NA
+  ld-api:
+    description: NA

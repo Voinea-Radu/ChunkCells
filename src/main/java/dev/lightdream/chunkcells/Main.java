@@ -1,7 +1,10 @@
 package dev.lightdream.chunkcells;
 
+import dev.lightdream.api.API;
 import dev.lightdream.api.LightDreamPlugin;
-import dev.lightdream.api.utils.LangUtils;
+import dev.lightdream.api.databases.User;
+import dev.lightdream.api.files.config.SQLConfig;
+import dev.lightdream.api.managers.MessageManager;
 import dev.lightdream.chunkcells.commands.*;
 import dev.lightdream.chunkcells.files.config.Config;
 import dev.lightdream.chunkcells.files.config.Lang;
@@ -10,7 +13,10 @@ import dev.lightdream.chunkcells.managers.DatabaseManager;
 import dev.lightdream.chunkcells.managers.EventsManager;
 import dev.lightdream.chunkcells.managers.ScheduleManager;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
 
 public final class Main extends LightDreamPlugin {
 
@@ -30,25 +36,12 @@ public final class Main extends LightDreamPlugin {
         init("ChunkCells", "cc", "1.0");
         instance = this;
 
-        baseCommands.add(new GenerateCell(this));
-        baseCommands.add(new UpgradeCommand(this));
-        baseCommands.add(new RegenerateMine(this));
-        baseCommands.add(new GetRaidTool(this));
-        baseCommands.add(new TpCommand(this));
-        baseCommands.add(new AdminModeCommand(this));
-        baseCommands.add(new FixWallsCommand(this));
-        baseCommands.add(new RentCommand(this));
+        System.out.println(getSQLConfig());
+        System.out.println(sqlConfig);
 
         databaseManager = new DatabaseManager(this);
         eventsManager = new EventsManager(this);
         new ScheduleManager(this);
-    }
-
-    @Override
-    public void onDisable() {
-        fileManager.save(saves);
-
-        databaseManager.save();
     }
 
     @Override
@@ -58,15 +51,70 @@ public final class Main extends LightDreamPlugin {
 
     @Override
     public void loadConfigs() {
+        sqlConfig= fileManager.load(SQLConfig.class);
         config = fileManager.load(Config.class);
         baseConfig = config;
-        lang = (Lang) fileManager.load(LangUtils.getLang(Main.class, config.lang));
+        lang = fileManager.load(Lang.class, fileManager.getFile(baseConfig.baseLang));
         baseLang = lang;
         saves = fileManager.load(Saves.class);
     }
 
     @Override
+    public void disable() {
+        databaseManager.save();
+
+    }
+
+    @Override
+    public void registerFileManagerModules() {
+
+    }
+
+    @Override
     public void loadBaseCommands() {
+        baseSubCommands.add(new GenerateCell(this));
+        baseSubCommands.add(new UpgradeCommand(this));
+        baseSubCommands.add(new RegenerateMine(this));
+        baseSubCommands.add(new GetRaidTool(this));
+        baseSubCommands.add(new TpCommand(this));
+        baseSubCommands.add(new AdminModeCommand(this));
+        baseSubCommands.add(new FixWallsCommand(this));
+        baseSubCommands.add(new RentCommand(this));
+    }
+
+
+    @Override
+    public MessageManager instantiateMessageManager() {
+        return new MessageManager(this, Main.class);
+    }
+
+    @Override
+    public void registerLangManager() {
+        API.instance.langManager.register(Main.class, getLangs());
+    }
+
+    @Override
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    @Override
+    public void setLang(Player player, String s) {
+        User user = databaseManager.getUser(player);
+        user.setLang(s);
+        databaseManager.save(user);
+    }
+
+    @Override
+    public HashMap<String, Object> getLangs() {
+        HashMap<String, Object> langs = new HashMap<>();
+
+        baseConfig.langs.forEach(lang -> {
+            Lang l = fileManager.load(Lang.class, fileManager.getFile(lang));
+            langs.put(lang, l);
+        });
+
+        return langs;
     }
 
 

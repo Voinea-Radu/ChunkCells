@@ -2,7 +2,6 @@ package dev.lightdream.chunkcells.managers;
 
 import dev.lightdream.api.files.dto.PluginLocation;
 import dev.lightdream.api.files.dto.XMaterial;
-import dev.lightdream.api.utils.MessageUtils;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.database.User;
 import dev.lightdream.chunkcells.utils.Utils;
@@ -106,11 +105,11 @@ public class EventsManager implements Listener {
                 }
                 raidMode.put(user, neighbor);
                 if (neighbor.isOnline()) {
-                    MessageUtils.sendMessage(neighbor, Main.instance.lang.cellRaided);
+                    Main.instance.getMessageManager().sendMessage(neighbor, Main.instance.lang.cellRaided);
                 }
-                MessageUtils.sendMessage(user, Main.instance.lang.raidStarted);
+                Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.raidStarted);
                 Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
-                    MessageUtils.sendMessage(user, Main.instance.lang.raidEnded);
+                    Main.instance.getMessageManager().sendMessage(user, Main.instance.lang.raidEnded);
                     raidMode.remove(user);
                     Utils.fixWalls(user);
                     Utils.fixWalls(neighbor);

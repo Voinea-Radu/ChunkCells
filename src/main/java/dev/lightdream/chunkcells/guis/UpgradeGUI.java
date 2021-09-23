@@ -3,7 +3,6 @@ package dev.lightdream.chunkcells.guis;
 import dev.lightdream.api.files.dto.GUIConfig;
 import dev.lightdream.api.files.dto.Item;
 import dev.lightdream.api.utils.ItemBuilder;
-import dev.lightdream.api.utils.MessageUtils;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.database.User;
 import dev.lightdream.chunkcells.utils.Utils;
@@ -52,11 +51,11 @@ public class UpgradeGUI implements InventoryProvider {
                 }
                 CookiePlayer cPlayer = Cookies.getInstance().getCookiePlayer(player.getUniqueId().toString());
                 if (!cPlayer.hasCookies(price)) {
-                    MessageUtils.sendMessage(player, Main.instance.lang.notEnoughCookies);
+                    Main.instance.getMessageManager().sendMessage(player, Main.instance.lang.notEnoughCookies);
                     return;
                 }
-                if(!user.upgrade(type)){
-                    MessageUtils.sendMessage(player, Main.instance.lang.cannotUpgrade);
+                if (!user.upgrade(type)) {
+                    Main.instance.getMessageManager().sendMessage(player, Main.instance.lang.cannotUpgrade);
                     return;
                 }
                 cPlayer.removeCookies(price);

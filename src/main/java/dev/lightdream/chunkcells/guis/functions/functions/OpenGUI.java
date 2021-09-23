@@ -1,6 +1,7 @@
 package dev.lightdream.chunkcells.guis.functions.functions;
 
 import com.google.gson.JsonElement;
+import dev.lightdream.api.files.dto.GUIItem;
 import dev.lightdream.chunkcells.Main;
 import dev.lightdream.chunkcells.database.User;
 import dev.lightdream.chunkcells.guis.ChoseAxisGUI;
@@ -12,8 +13,8 @@ import java.util.Locale;
 
 public class OpenGUI implements GUIFunction {
     @Override
-    public void execute(User user, JsonElement args) {
-        String gui = args.getAsString();
+    public void execute(User user, Object args) {
+        String gui = (String) ((GUIItem.GUIItemArgs)args).getFunctionArgs("open_gui");
 
         if(gui.contains("rent_")){
             gui = gui.replace("rent_", "");
